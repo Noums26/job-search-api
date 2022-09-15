@@ -1,0 +1,390 @@
+openapi: 3.0.3
+info:
+  version: '1.0'
+  title: JOB SEARCH
+  description: This is an Api specification for job search project.
+
+servers:
+  - url: 'http://localhost:8080'
+
+paths:
+  '/users':
+    get:
+      tags:
+        - Users
+      summary: Get All Users
+      operationId: getAllUsers
+      responses:
+        200:
+          description: List of all users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  allOf:
+                    - $ref: '#/components/schemas/user'
+                  properties:
+                    offers:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/offerRes'
+        400:
+          description: BadRequest
+    put:
+      tags:
+        - Users
+      summary: Update user information
+      operationId: updateUser
+      requestBody:
+        description: User to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        200:
+          description: modified user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        400:
+          description: BadRequest
+    post:
+      tags:
+        - Users
+      summary: Create user
+      operationId: createUser
+      requestBody:
+        description: User to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        200:
+          description: created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        400:
+          description: BadRequest
+  /users/{user_id}:
+    get:
+      tags:
+        - Users
+      summary: Get User
+      operationId: getAllUserById
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/user'
+                properties:
+                  offers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/offerRes'
+        400:
+          description: BadRequest
+  /users/enterprises:
+    get:
+      tags:
+        - Users
+      summary: Get Enterprises
+      operationId: getAllEnterprises
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  allOf:
+                    - $ref: '#/components/schemas/user'
+                  properties:
+                    offers:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/offerRes'
+        400:
+          description: BadRequest
+  /users/{user_id}/candidacies:
+    get:
+      tags:
+        - Users
+      summary: Get All Candidacies Of An User
+      operationId: getAllCandidaciesOfAnUser
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offerRes'
+
+        400:
+          description: BadRequest
+
+  /offers:
+    get:
+      tags:
+        - Offers
+      summary: Get All Available Offers
+      operationId: getAllAvailableOffers
+      responses:
+        200:
+          description: List of available offers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/offerRes'
+        400:
+          description: BadRequest
+    post:
+      tags:
+        - Offers
+      summary: Create offer
+      operationId: createOffer
+      requestBody:
+        description: offer to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offer'
+      responses:
+        200:
+          description: created offer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offerRes'
+        400:
+          description: BadRequest
+    put:
+      tags:
+        - Offers
+      summary: Update offer
+      operationId: updateOffer
+      requestBody:
+        description: offer with update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offer'
+      responses:
+        200:
+          description: updated offer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offerRes'
+        400:
+          description: BadRequest
+
+  /offers/missions:
+    post:
+      tags:
+        - Offers
+      summary: Add mission
+      operationId: addMissionToAnOffer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/mission'
+      responses:
+        200:
+          description: created mission
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/mission'
+        400:
+          description: BadRequest
+
+  /{offers_id}/postulate:
+    post:
+      tags:
+        - Offers
+      summary: Postulate
+      operationId: postulateToAnOffer
+      parameters:
+        - name: offers_id
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/candidacy'
+      responses:
+        200:
+          description: created candidacy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/candidacy'
+        400:
+          description: BadRequest
+  /{offers_id}/candicates:
+    get:
+      tags:
+        - Offers
+      summary: Get all candidates for an offer
+      parameters:
+        - name: offers_id
+          in: path
+          required: true
+      responses:
+        200:
+          description: created candidacy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/candidacy'
+        400:
+          description: BadRequest
+
+  /missions:
+    post:
+      tags:
+        - Missions
+      summary: update mission
+      operationId: updateMission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/mission'
+      responses:
+        200:
+          description: updated mission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mission'
+        400:
+          description: BadRequest
+          
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        birthDate:
+          type: string
+        email:
+          type: string
+          example: mail@gmail.com
+        phoneNumber:
+          type: string
+          example: +261321654987
+        description:
+          type: string
+        userName:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+            - ENTERPRISE
+            - CLIENT
+        creationDate:
+          type: string
+          format: date-time
+
+    offerRes:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/offer'
+      properties:
+        missions:
+          type: array
+          items:
+            $ref: '#/components/schemas/mission'
+
+    offer:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        domain_id:
+          type: integer
+        user_id:
+          type: integer
+        state:
+          type: boolean
+
+    mission:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+        offer_id:
+          type: integer
+
+    domain:
+        type: object
+        properties:
+          id:
+            type: integer
+          title:
+            type: string
+
+    candidacy:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        offer_id:
+          type: integer
