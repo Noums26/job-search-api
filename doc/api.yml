@@ -151,6 +151,87 @@ paths:
         400:
           description: BadRequest
 
+  /domains:
+    get:
+      tags:
+        - Domains
+      summary: Get All Domains
+      operationId: getAllDomains
+      responses:
+        200:
+          description: List of domains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/domain'
+        400:
+          description: BadRequest
+    post:
+      tags:
+        - Domains
+      summary: Create domain
+      operationId: createDomain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/domain'
+      responses:
+        200:
+          description: List of domains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/domain'
+        400:
+          description: BadRequest
+    put:
+      tags:
+        - Domains
+      summary: update domain
+      operationId: updateDomain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/domain'
+      responses:
+        200:
+          description: List of domains
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/domain'
+        400:
+          description: BadRequest
+  /domains/{id}:
+    get:
+      tags:
+        - Domains
+      summary: get domain by id
+      operationId: getDomainById
+      parameters:
+        - name: id
+          required: true
+          in: path
+      responses:
+        200:
+          description: identified domain
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/domain'
+        400:
+          description: BadRequest
+
   /offers:
     get:
       tags:
@@ -285,7 +366,7 @@ paths:
     post:
       tags:
         - Missions
-      summary: update mission
+      summary: update or create mission for an offer
       operationId: updateMission
       requestBody:
         required: true
@@ -302,7 +383,7 @@ paths:
                 $ref: '#/components/schemas/mission'
         400:
           description: BadRequest
-          
+
 components:
   schemas:
     user:
